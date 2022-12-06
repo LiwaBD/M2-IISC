@@ -6,6 +6,7 @@ public class ComputeAgent extends Agent {
 
 	protected void setup() {
 		
+		
 		double Single_Integral;
 		double min=0.0, max=0.0, delta=0.0;
 		System.out.println("My local name is "+ getLocalName());
@@ -20,7 +21,7 @@ public class ComputeAgent extends Agent {
 		       max = Double.parseDouble(arg2);
 		       delta = Double.parseDouble(arg3);
 			   System.out.println("Integral Min : "+ min);
-			   System.out.println("Integral Max : "+ max);
+			   System.out.println("Integral Max : "+ max); 
 			   System.out.println("Delta : "+ delta);
 	       }
 	       
@@ -31,12 +32,13 @@ public class ComputeAgent extends Agent {
 	     long endTime = System.currentTimeMillis();
 	     
 	     System.out.println("** Single result = " + Single_Integral + "  Done in :" + (endTime-startTime) + " ms");
-		 this.takeDown();
+		 AgentTakeDown();
 		}
 	
 	
-	protected void takeDown() 
+	protected void AgentTakeDown() 
 	{
+		takeDown();
 	    // Printout a dismissal message
 	    System.out.println("Agent "+ getLocalName()+" terminating.");
 	}
