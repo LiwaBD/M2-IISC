@@ -1,2 +1,3 @@
 https://stackoverflow.com/questions/28652869/how-to-get-agents-on-all-containers-jade
 https://stackoverflow.com/questions/22760638/how-to-register-an-agent-from-different-platform-to-a-different-platform-located
+https://stackoverflow.com/questions/39410873/how-execute-an-jade-agent-from-ordinarynot-agent-java-class
