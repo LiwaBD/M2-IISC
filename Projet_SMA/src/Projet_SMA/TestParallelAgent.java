@@ -48,17 +48,17 @@ public class TestParallelAgent extends Agent
         catch (FIPAException fe) { fe.printStackTrace(); }
     }
     
-    void register( ServiceDescription sd)
-    {
-        DFAgentDescription dfd = new DFAgentDescription();
-        dfd.setName(getAID());
-        dfd.addServices(sd);
-
-        try {  
-            DFService.register(this, dfd );  
-        }
-        catch (FIPAException fe) { fe.printStackTrace(); }
-    }
+//    void register( ServiceDescription sd)
+//    {
+//        DFAgentDescription dfd = new DFAgentDescription();
+//        dfd.setName(getAID());
+//        dfd.addServices(sd);
+//
+//        try {  
+//            DFService.register(this, dfd );  
+//        }
+//        catch (FIPAException fe) { fe.printStackTrace(); }
+//    }
     
 //	AID getService( String service )
 //	{
