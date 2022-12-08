@@ -2,7 +2,7 @@ package Projet_SMA;
 
 import jade.core.Agent;
 import jade.core.AID;
-
+import jade.domain.AMSService;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
@@ -10,16 +10,18 @@ import jade.domain.FIPAException;
 public class TestParallelAgent extends Agent 
 {
     
-    protected void setup() 
+    @SuppressWarnings("removal")
+	protected void setup() 
     {
     	double min = 1;
     	double max = 6;
     	double delta = 0.5;
     	double min_sub_interval[]; 
     	double max_sub_interval[];
-        ServiceDescription sd  = new ServiceDescription();
-        sd.setName( getLocalName() );
-        register( sd );
+//        ServiceDescription sd  = new ServiceDescription();
+//        sd.setName( getLocalName() );
+//        sd.setType("ca");
+//        register( sd );
         
         try {
 			DFAgentDescription dfd = new DFAgentDescription();
@@ -44,8 +46,6 @@ public class TestParallelAgent extends Agent
 //				System.out.println(" " + result[0].getName() );
         }
         catch (FIPAException fe) { fe.printStackTrace(); }
-
-//		System.exit(0);
     }
     
     void register( ServiceDescription sd)
