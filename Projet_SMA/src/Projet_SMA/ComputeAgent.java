@@ -1,6 +1,10 @@
 package Projet_SMA;
 
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAException;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 public class ComputeAgent extends Agent {
 
@@ -10,6 +14,11 @@ public class ComputeAgent extends Agent {
 		double Single_Integral;
 		double min=0.0, max=0.0, delta=0.0;
 		System.out.println("My local name is "+ getLocalName());
+		
+        ServiceDescription sd  = new ServiceDescription();
+        sd.setName( getLocalName() );
+        sd.setType("Compute Agent");
+        register( sd );
 		 
 	        Object[] args = getArguments();
 	        String arg1 = args[0].toString(); 
@@ -44,14 +53,15 @@ public class ComputeAgent extends Agent {
 	}
 	
 	
-//	  void register( ServiceDescription sd) {
-//		    DFAgentDescription dfd = new DFAgentDescription();
-//		    dfd.setName(getAID());
-//		    dfd.addServices(sd);
-//
-//		    try {
-//		      DFService.register(this, dfd );
-//		    }
-//		    catch (FIPAException fe) { fe.printStackTrace(); }
-//		  }
+    void register( ServiceDescription sd)
+    {
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        dfd.addServices(sd);
+
+        try {  
+            DFService.register(this, dfd );  
+        }
+        catch (FIPAException fe) { fe.printStackTrace(); }
+    }
 }
