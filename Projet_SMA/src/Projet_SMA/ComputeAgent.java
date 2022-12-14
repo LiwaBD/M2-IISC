@@ -6,55 +6,48 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
-public class ComputeAgent extends Agent {
+//TODO modify the comments 
+/**
+ * This class represents the function that we are going to use to calculate the integrals in the project
+ * 
+ * @author BEN DHIA Liwa / ROUAS Amal
+ * @version 1.0
+ * 
+ * */
 
-//	static double delta, min, max;
+public class ComputeAgent extends Agent {
+	
+    /**
+     *This method sets up the compute agents
+     */
 	protected void setup() {
 		
-		
-		double Single_Integral;
-		
-		System.out.println("My local name is "+ getLocalName());
+		System.out.println("Compute Agent "+ getLocalName() + " created.");
 		
         ServiceDescription sd  = new ServiceDescription();
         sd.setName( getLocalName() );
         sd.setType("Compute Agent");
         register( sd );
-		 
-//	        Object[] args = getArguments();
-//	        String arg1 = args[0].toString(); 
-//	        String arg2 = args[1].toString(); 
-//	        String arg3 = args[2].toString(); 
-//	       if (args != null && args.length != 0)
-//	       {
-//		       min = Double.parseDouble(arg1);
-//		       max = Double.parseDouble(arg2);
-//		       delta = Double.parseDouble(arg3);
-//			   System.out.println("Integral Min : "+ min);
-//			   System.out.println("Integral Max : "+ max); 
-//			   System.out.println("Delta : "+ delta);
-//	       }
-	       
-	     System.out.println("** Single calculator: **");
-	     
-	 	 long startTime = System.currentTimeMillis();
-	     Single_Integral = 0.0;//Projet_SMA.Function.MyFunction(min,max,delta);
-	     long endTime = System.currentTimeMillis();
-	     
-	     
-	     System.out.println("** Single result = " + Single_Integral + "  Done in :" + (endTime-startTime) + " ms");
+	      
 		 AgentTakeDown();
 		}
 	
-	
+	/**
+	 *This method will take down the agent after completing the registration
+	 */
 	protected void AgentTakeDown() 
 	{
 		takeDown();
 	    // Printout a dismissal message
-	    System.out.println("Agent "+ getLocalName()+" terminating.");
+	    System.out.println("Agent "+ getLocalName()+" terminating...");
+	    System.out.println("**************************************************");
 	}
 	
-	
+	/**
+	 *This method will register evry compute agent created by the user 
+	 *
+	 *@param sd Service Description instance
+	 */
     void register( ServiceDescription sd)
     {
         DFAgentDescription dfd = new DFAgentDescription();
