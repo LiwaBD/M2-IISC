@@ -1,10 +1,11 @@
 
 # Projet SMA 
 
-Authors : BEN DHIA Liwa & ROUAS Amal
-Date : 14/12/2022
-Version : 1.0
-Modification : NA
+/*Authors : BEN DHIA Liwa & ROUAS Amal
+*Date : 14/12/2022
+*Version : 1.0
+*Modification : NA
+*/
 
 This file
 
