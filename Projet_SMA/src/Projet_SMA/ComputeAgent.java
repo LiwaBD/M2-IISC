@@ -6,7 +6,6 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
-//TODO modify the comments 
 /**
  * This class represents the function that we are going to use to calculate the integrals in the project
  * 
