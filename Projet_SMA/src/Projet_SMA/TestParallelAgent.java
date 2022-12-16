@@ -1,8 +1,10 @@
 package Projet_SMA;
 
 import jade.core.Agent;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
+import jade.lang.acl.ACLMessage;
 import jade.domain.FIPAException;
 
 /**
@@ -17,7 +19,6 @@ import jade.domain.FIPAException;
 
 public class TestParallelAgent extends Agent 
 {
-	
 	/**
 	 * Method to setup the agent that we are going to use to test our project
 	 * 
@@ -49,15 +50,19 @@ public class TestParallelAgent extends Agent
        }
         
         try {
-        	
+			//calculating the single integral
+			long single_int_start = timeStamp();
+		    Single_Integral = Projet_SMA.Function.MyFunction(min,max,delta);
+		    long single_int_stop = timeStamp();
+			System.out.println("** Single Calculator = " + Single_Integral + "  Done in :" + (single_int_stop-single_int_start) + " ms");
+			System.out.println("**************************************************");
+			
         	//searching for compute agents
 			DFAgentDescription dfd = new DFAgentDescription();
 			DFAgentDescription[] result = DFService.search(this, dfd);
 			
 			System.out.println("Search returns: " + result.length + " compute agents" );
 			
-			//calculating partial integrals
-		    double[] partial_integral = new double[result.length];
 		    double[] new_min = new double[result.length];
 		    double[] new_max = new double[result.length];
 
@@ -67,48 +72,60 @@ public class TestParallelAgent extends Agent
 			    double devider = (max - min)/result.length;
 			    new_min[i] = min + (i*devider);
 			    new_max[i] = min + ((i+1)*devider);
-			      
-			    partial_integral[i] = Function.MyFunction(new_min[i],new_max[i],delta);
+				
+				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+	            message.setContent(new_min[i] + "," + new_max[i] + "," + delta);
+	            message.addReceiver(result[i].getName());
+	            send(message);}
+	            
+	            // Add the behavior to wait for agents to send their response
+	            addBehaviour(new SimpleBehaviour() {
 
-				System.out.println("ComputeAgent " + result[i].getName().getLocalName()+ " replies: " + partial_integral[i]);
-			}
-			
-			long part_int_stop = timeStamp();
-			System.out.println("** Summed integal = "+ total(partial_integral,i) + "  Done in :" + (part_int_stop-part_int_start) + " ms");	
-			
+	                double current_sum = 0.0;
+	                int result_count_received = 0;
+	            	/**
+	            	 * The action of the behavior 
+	            	 * 
+	            	 */
+	                public void action() {
+	                    ACLMessage message = receive();
+	                    if (message != null) {
+	                    	result_count_received++;
+	                        double value = Double.parseDouble(message.getContent());
+	                        current_sum += value;
+	                    } else {
+	                        block();
+	                    }  
+	                }
+	                
+	            	/**
+	            	 * Method that returns the count of the received messages
+	            	 * 
+	            	 */
+	                @Override
+	                public boolean done() {
+	                    // Done when all messages are received
+	                    return result_count_received >= result.length;
+	                }
+	            	/**
+	            	 * Method that prints the results at the end of the reception
+	            	 * 
+	            	 */
+	                @Override
+	                public int onEnd() {
+	                    // All messages are received, print the result
+	                	long part_int_stop = timeStamp();
+	                    System.out.println("** Summed Integral from ComputeAgents = " + current_sum);
+	                    System.out.println("Done in :" + (part_int_stop-part_int_start) + " ms");
+	                    System.out.println("**************************************************");
+	                    return 0;
+	                }
+	            });
+				
 			System.out.println("**************************************************");
-			
-			//calculating the single integral
-			long single_int_start = timeStamp();
-		    Single_Integral = Projet_SMA.Function.MyFunction(min,max,delta);
-		    long single_int_stop = timeStamp();
-			System.out.println("** Single Calculator = " + Single_Integral + "  Done in :" + (single_int_stop-single_int_start) + " ms");
-			
-			System.out.println("**************************************************");
-
         }
         catch (FIPAException fe) { fe.printStackTrace(); }
     }
-	
-	/**
-	 *Method that calculates the sum of the partial integrals
-	 *
-	 *@param partial_integrals : The integrals that we wants to calculate their sum
-	 *@param integral_nb : the number of the integrals
-	 *
-	 *@return Returns a float representing the total of the partial integrals 
-	 */
-	protected double total(double[] partial_integrals, int integral_nb)
-	{
-		double total = 0;
-		
-		for (int counter = 0;counter<integral_nb;counter++)
-		{
-			total+= partial_integrals[counter];
-		}
-		
-		return total;
-	}
 	
 	/**
 	 *Method to get the current time in milliseconds
