@@ -22,4 +22,4 @@ Now create your TestParallelAgent agent and pass as arguments in the same order 
 
 You should get this in the output:
 
-![Capture](https://user-images.githubusercontent.com/37658985/208199631-b6a83626-8c26-44e0-9824-00164bbfcf51.GIF)
+![Capture](https://user-images.githubusercontent.com/37658985/208200255-aca094db-da03-4167-a20a-35387c57ad5f.GIF)
