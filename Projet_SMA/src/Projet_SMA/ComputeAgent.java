@@ -1,11 +1,13 @@
 package Projet_SMA;
 
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-
+import jade.lang.acl.ACLMessage;
+ 
 /**
  * This class represents the function that we are going to use to calculate the integrals in the project
  * 
@@ -27,8 +29,33 @@ public class ComputeAgent extends Agent {
         sd.setName( getLocalName() );
         sd.setType("Compute Agent");
         register( sd );
-	      
-		 AgentTakeDown();
+        
+        addBehaviour(new CyclicBehaviour() {
+        	/**
+        	 * The action of the behavior
+        	 * 
+        	 */
+            public void action() {
+                ACLMessage message = receive();
+                
+                if (message != null) {
+
+                    // getting the integral parameters from message arguments
+                    String[] split = message.getContent().split(",");
+                    double min =  Double.parseDouble(split[0]);
+                    double max =  Double.parseDouble(split[1]);
+                    double delta = Double.parseDouble(split[2]);
+                    
+                    double result = Function.MyFunction(min,max,delta);
+                   
+                    ACLMessage reply = message.createReply();
+                    reply.setPerformative(ACLMessage.INFORM);
+                    reply.setContent(String.valueOf(result));
+                    send(reply);
+                    System.out.println(String.format("** Agent %s send response partial integral between %f and %f = %f",getLocalName(),min,max,result));
+                } else block();
+            }
+         });
 		}
 	
 	/**
@@ -36,10 +63,14 @@ public class ComputeAgent extends Agent {
 	 */
 	protected void AgentTakeDown() 
 	{
-		takeDown();
 	    // Printout a dismissal message
-	    System.out.println("Agent "+ getLocalName()+" terminating...");
+	    System.out.println("Derigistring Agent "+ getLocalName()+" ...");
 	    System.out.println("**************************************************");
+        try {
+            DFService.deregister(this);
+        } catch (FIPAException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	/**
@@ -57,5 +88,5 @@ public class ComputeAgent extends Agent {
             DFService.register(this, dfd );  
         }
         catch (FIPAException fe) { fe.printStackTrace(); }
-    }
+    }   
 }
